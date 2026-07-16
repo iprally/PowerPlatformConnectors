@@ -23,10 +23,6 @@ We also need the Redirect URL that Power Platform generates for your connector i
 3. Add the connector to a Copilot Studio agent under **Tools → Add a tool**, or reference it from a Power Automate flow.
 4. In Copilot Studio, IPRally's MCP tools appear in the agent's tool list and can be enabled or disabled individually.
 
-## Verification
-
-_TODO: add screenshots of the Test operation (Custom Connector UI) and an end-to-end Copilot Studio agent call before publishing._
-
 ## Known issues and limitations
 
 - The MCP server returns `401` if the access token is missing or expired — reconnect the connection.
