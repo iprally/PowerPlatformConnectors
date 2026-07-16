@@ -1,0 +1,60 @@
+name: Validate connector configuration
+
+on:
+  pull_request:
+    paths:
+      - "**/apiDefinition.swagger.json"
+      - "**/apiProperties.json"
+      - ".github/workflows/validate-connectors.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "**/apiDefinition.swagger.json"
+      - "**/apiProperties.json"
+      - ".github/workflows/validate-connectors.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Check connector file pairs
+        run: |
+          status=0
+
+          while IFS= read -r -d '' api_definition; do
+            connector_dir=$(dirname "$api_definition")
+            if [[ ! -f "$connector_dir/apiProperties.json" ]]; then
+              echo "Missing apiProperties.json next to $api_definition"
+              status=1
+            fi
+          done < <(find . -type f -name apiDefinition.swagger.json -print0)
+
+          while IFS= read -r -d '' api_properties; do
+            connector_dir=$(dirname "$api_properties")
+            if [[ ! -f "$connector_dir/apiDefinition.swagger.json" ]]; then
+              echo "Missing apiDefinition.swagger.json next to $api_properties"
+              status=1
+            fi
+          done < <(find . -type f -name apiProperties.json -print0)
+
+          exit "$status"
+
+      - name: Check connector JSON syntax
+        run: |
+          find . -type f \( -name apiDefinition.swagger.json -o -name apiProperties.json \) -print0 \
+            | xargs -0 -r jq empty
+
+      - name: Validate connector Swagger definitions
+        run: find . -type f -name apiDefinition.swagger.json -print0 | xargs -0 -r npx --yes @redocly/cli@2.38.0 lint
