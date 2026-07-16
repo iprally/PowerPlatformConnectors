@@ -1,0 +1,89 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "IPRally Search MCP",
+    "description": "Patent similarity search, Boolean search, and full patent document lookup powered by IPRally, exposed through the Model Context Protocol (MCP) so Copilot Studio agents and Power Automate flows can search and analyze patents using natural language.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "IPRally Support",
+      "url": "https://www.iprally.com",
+      "email": "support@iprally.com"
+    }
+  },
+  "host": "mcp.iprally.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json",
+    "text/event-stream"
+  ],
+  "paths": {
+    "/mcp": {
+      "post": {
+        "summary": "IPRally Search MCP",
+        "description": "Invokes the IPRally MCP server with a streamable response. The request body and response are JSON-RPC 2.0 messages defined by the Model Context Protocol (https://modelcontextprotocol.io). Copilot Studio and other MCP hosts negotiate the protocol, list tools (patent similarity search, Boolean search, patent document lookup, and more), and invoke them through this single operation; the response schema is dynamic because it depends on which MCP method is being invoked.",
+        "operationId": "InvokeServer",
+        "x-ms-agentic-protocol": "mcp-streamable-1.0",
+        "responses": {
+          "200": {
+            "description": "Immediate Response"
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "Unauthorized. Ensure a valid access token is provided and reconnect the connection if it has expired."
+          },
+          "422": {
+            "description": "Unprocessable entity. Returned when a publication-number argument does not exist in IPRally's index."
+          },
+          "500": {
+            "description": "Internal Server Error. An unexpected error occurred on the IPRally MCP server. Please try again later or contact IPRally support if the issue persists."
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "oauth2-auth": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "https://login.iprally.com/authorize",
+      "tokenUrl": "https://login.iprally.com/oauth/token",
+      "scopes": {
+        "offline_access": "offline_access"
+      }
+    }
+  },
+  "security": [
+    {
+      "oauth2-auth": [
+        "offline_access"
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "IPRally Search MCP"
+    }
+  ],
+  "x-ms-connector-metadata": [
+    {
+      "propertyName": "Website",
+      "propertyValue": "https://www.iprally.com"
+    },
+    {
+      "propertyName": "Privacy policy",
+      "propertyValue": "https://www.iprally.com/legal/privacy-policy"
+    },
+    {
+      "propertyName": "Categories",
+      "propertyValue": "AI;Content and Files"
+    }
+  ]
+}
