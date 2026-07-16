@@ -1,33 +1,23 @@
-# IPRally Search MCP Connector
+# IPRally Power Platform Connectors
 
-[IPRally](https://www.iprally.com) is an AI-powered patent search and IP analytics platform. This connector exposes IPRally's remote MCP server (`https://mcp.iprally.com/mcp`) so Microsoft Copilot Studio agents and Power Automate flows can search patents, run Boolean prior-art queries, and retrieve full patent bibliographies using natural language.
+Custom Power Platform / Copilot Studio connectors for IPRally's MCP servers.
 
-The server implements the [Model Context Protocol](https://modelcontextprotocol.io/) Streamable HTTP transport (`x-ms-agentic-protocol: mcp-streamable-1.0`). When imported into Copilot Studio, the connector surfaces IPRally's MCP tools (for example `searchPatents`, `booleanSearch`, `getPatentDocument`, `getSearchOptions`, `readIprallyDoc`, `sendFeedback`) to the agent. The tool list is not described in `apiDefinition.swagger.json` — Copilot Studio discovers it dynamically at runtime via the MCP protocol itself.
+## Connectors
 
-## Prerequisites
+- [IPRally Search MCP](./IPRallySearchMCP) — patent similarity search, Boolean search, and full patent document lookup via `https://mcp.iprally.com/mcp`.
 
-- An IPRally account with API/MCP access enabled.
+## Repository layout
 
-## Authentication
+Each connector lives in its own directory containing:
 
-The connector uses OAuth 2.0 (Authorization Code with PKCE) against IPRally's identity provider (`login.iprally.com`). When creating a connection, you're redirected to log in with your IPRally account and grant access; the connection requests the `offline_access` scope so it keeps working without repeated logins.
+- `README.md` — description, prerequisites, authentication, usage, and known issues specific to that connector.
+- `apiDefinition.swagger.json` — the OpenAPI (Swagger 2.0) definition imported as a Power Platform custom connector.
+- `apiProperties.json` — connection/auth properties (OAuth settings, brand color, etc.) for the same connector.
 
-`apiProperties.json` ships with a placeholder Client ID (`<<Please add your Client ID here>>`). Before running `paconn create` / `paconn update`, replace it with a real OAuth Client ID registered against `https://global.consent.azure-apim.net/redirect/...` as an allowed callback. Do not commit a real Client ID back to this repository.
+This mirrors the per-connector folder convention used by [microsoft/PowerPlatformConnectors](https://github.com/microsoft/PowerPlatformConnectors).
 
-## Usage
+## Adding a new connector
 
-1. Import `apiDefinition.swagger.json` and `apiProperties.json` into your Power Platform environment as a custom connector (via the Power Apps/Power Automate custom connector UI, or `paconn create`).
-2. Create a connection and sign in with your IPRally account.
-3. Add the connector to a Copilot Studio agent under **Tools → Add a tool**, or reference it from a Power Automate flow.
-4. In Copilot Studio, IPRally's MCP tools appear in the agent's tool list and can be enabled or disabled individually.
-
-## Verification
-
-_TODO: add screenshots of the Test operation (Custom Connector UI) and an end-to-end Copilot Studio agent call before publishing._
-
-## Known issues and limitations
-
-- The MCP server returns `401` if the access token is missing or expired — reconnect the connection.
-- `getPatentDocument` returns `422` when the given publication number isn't in IPRally's index.
-
-For help, contact [support@iprally.com](mailto:support@iprally.com).
+1. Create a new directory named after the connector.
+2. Add `apiDefinition.swagger.json`, `apiProperties.json`, and a `README.md`, following the structure in [`IPRallySearchMCP/README.md`](./IPRallySearchMCP/README.md).
+3. Validate with `paconn validate --api-def <connector>/apiDefinition.swagger.json` before committing.
