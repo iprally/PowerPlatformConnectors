@@ -2,17 +2,9 @@ name: Validate connector configuration
 
 on:
   pull_request:
-    paths:
-      - "**/apiDefinition.swagger.json"
-      - "**/apiProperties.json"
-      - ".github/workflows/validate-connectors.yml"
   push:
     branches:
       - main
-    paths:
-      - "**/apiDefinition.swagger.json"
-      - "**/apiProperties.json"
-      - ".github/workflows/validate-connectors.yml"
   workflow_dispatch:
 
 permissions:
