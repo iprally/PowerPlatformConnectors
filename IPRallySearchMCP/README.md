@@ -2,7 +2,7 @@
 
 [IPRally](https://www.iprally.com) is an AI-powered patent search and IP analytics platform. This connector exposes IPRally's remote MCP server (`https://mcp.iprally.com/mcp`) so Microsoft Copilot Studio agents and Power Automate flows can search patents, run Boolean prior-art queries, and retrieve full patent bibliographies using natural language.
 
-The server implements the [Model Context Protocol](https://modelcontextprotocol.io/) Streamable HTTP transport (`x-ms-agentic-protocol: mcp-streamable-1.0`). When imported into Copilot Studio, the connector surfaces IPRally's MCP tools (for example `searchPatents`, `booleanSearch`, `getPatentDocument`, `getSearchOptions`, `readIprallyDoc`, `sendFeedback`) to the agent. The tool list is not described in `apiDefinition.swagger.json` — Copilot Studio discovers it dynamically at runtime via the MCP protocol itself.
+The server implements the [Model Context Protocol](https://modelcontextprotocol.io/) Streamable HTTP transport (`x-ms-agentic-protocol: mcp-streamable-1.0`). When imported into Copilot Studio, the connector surfaces IPRally's MCP tools (for example `searchPatents`, `booleanSearch`, `getPatentDocument`, `readIprallyDoc`, `sendFeedback`) to the agent. The tool list is not described in `apiDefinition.swagger.json` — Copilot Studio discovers it dynamically at runtime via the MCP protocol itself.
 
 ## Prerequisites
 
