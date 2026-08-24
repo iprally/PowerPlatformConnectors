@@ -12,9 +12,9 @@ The server implements the [Model Context Protocol](https://modelcontextprotocol.
 
 The connector uses OAuth 2.0 (Authorization Code with PKCE) against IPRally's identity provider (`login.iprally.com`). When creating a connection, you're redirected to log in with your IPRally account and grant access; the connection requests the `offline_access` scope so it keeps working without repeated logins.
 
-`apiProperties.json` ships with a placeholder Client ID (`<<Please add your Client ID here>>`). Contact [support@iprally.com](mailto:support@iprally.com) to obtain the OAuth Client ID and Client Secret for your connection before running `paconn create` / `paconn update`. Do not commit real credentials back to this repository.
+`apiProperties.json` ships with a placeholder Client ID (`<<Please add your Client ID here>>`). A company admin can create the OAuth credentials in IPRally under [Settings → Company → MCP](https://app.iprally.com/#/settings/company/mcp): create an MCP client to get a Client ID and Client Secret, and fill them in before running `paconn create` / `paconn update`. Do not commit real credentials back to this repository.
 
-We also need the Redirect URL that Power Platform generates for your connector instance (of the form `https://global.consent.azure-apim.net/redirect/...`) — send it to us along with your request so we can whitelist it as an allowed callback.
+Power Platform generates a Redirect URL for your connector instance (of the form `https://global.consent.azure-apim.net/redirect/...`). Add it to the MCP client's allowed callback URLs on the same settings page.
 
 ## Usage
 
